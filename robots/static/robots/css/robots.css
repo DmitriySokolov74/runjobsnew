@@ -1,0 +1,40 @@
+.robots_table {
+    float: left;
+    padding: 2.5%;
+    width: 70%;
+}
+
+.robots_table table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 60%;
+}
+
+.robots_table td, th {
+    border: 1px solid #a9dbb1;
+    text-align: left;
+    padding: 8px;
+}
+
+.robots_table a {
+    text-decoration: none;
+}
+
+.robots_table button {
+    margin-top: 1%;
+}
+
+.add_robot {
+    float: left;
+    width: 70%;
+    padding: 2.5%;
+}
+
+.add_robot h1 {
+    padding-bottom: 2.5%;
+}
+
+.add_robot img {
+    width: 100%;
+    float: left;
+}

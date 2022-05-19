@@ -1,0 +1,25 @@
+{% extends 'robots/layout.html' %}
+
+{% block title %}
+    {{ robot.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="robots_table">
+        <h1>{{ robot.name }}</h1>
+        <h3>Описание</h3>
+        <p>{{ robot.info }}</p>
+        <h3>Создан</h3>
+        <p>{{ robot.date|date:"d.m.Y" }}</p>
+        <h3>Клиент</h3>
+        <p>{{ robot.client }}</p>
+        <h3>Разрешенные отправители писем запуска</h3>
+        <p>
+            {% for e in robot.email.all %}
+                {{ e }}<br>
+            {% endfor %}
+        </p>
+        <a href="{% url 'robot-delete' robot.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'robot-update' robot.pk %}" class="btn btn-info">Редактировать</a>
+    </div>
+{% endblock %}

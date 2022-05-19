@@ -1,0 +1,44 @@
+{% extends 'robots/layout.html' %}
+
+{% block title %}
+    Роботы
+{% endblock %}
+
+{% block content %}
+    <div class="robots_table">
+        <h1>Список роботов</h1>
+        {% if robots %}
+            <table>
+              <tr>
+                <th>Имя</th>
+                <th>Описание</th>
+                <th>Дата</th>
+                <th>Эл. почта</th>
+                <th>Клиент</th>
+              </tr>
+                {# Вывод всех записей модели Robots #}
+                {% for x in robots %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'robot-detail' x.pk %}">
+                                {{ x.name }}
+                            </a>
+                        </td>
+                        <td>{{ x.info }}</td>
+                        <td>{{ x.date|date:"d.m.Y" }}</td>
+                        <td>
+                            {# для поля с типом связи ManyToMany нужно выводить содержимое так: #}
+                            {% for e in x.email.all %}
+                                {{ e }}<br>
+                            {% endfor %}
+                        </td>
+                        <td>{{ x.client }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Таблица роботов пуста</p>
+        {% endif %}
+        <a href="{% url 'robot-add' %}"><button class="btn btn-success"><i class="fa-solid fa-plus"></i> Добавить робота</button></a>
+    </div>
+{% endblock %}

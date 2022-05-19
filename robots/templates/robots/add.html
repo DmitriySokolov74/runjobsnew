@@ -1,0 +1,30 @@
+{% extends 'robots/layout.html' %}
+
+{% block title %}Новый робот{% endblock %}
+
+{% block content %}
+    <div class="add_robot">
+        <h1>Добавление робота</h1>
+        <form method="post">
+            {# добавляем CSRF-токен для безопасной передачи данных из формы #}
+            {% csrf_token %}<br>
+            Имя <br>{{ form.name }}<br><br>
+            Описание <br>{{ form.info }}<br><br>
+            Эл. почта <br>{{ form.email }}<br><br>
+            Клиент <br> {{ form.client }}<br><br>
+            <button class="btn btn-success" type="submit">Сохранить</button><br>
+            {# тип обязательно submit для возможносит отправки post-запроса #}
+        </form>
+        <br>
+        {% if 'неверно' in result_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ result_message }}
+            </div>
+        {% endif %}
+        {% if 'успешно' in result_message %}
+            <div class="alert alert-success" role="alert">
+               {{ result_message }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

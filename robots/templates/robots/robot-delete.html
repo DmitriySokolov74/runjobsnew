@@ -1,0 +1,28 @@
+{% extends 'robots/layout.html' %}
+
+{% block title %}
+    Удаление робота
+{% endblock %}
+
+{% block content %}
+    <div class="add_robot">
+        <h1>Удаление робота</h1>
+        <form method="post">
+            {# добавляем CSRF-токен для безопасной передачи данных из формы #}
+            {% csrf_token %}<br>
+            <button class="btn btn-success" type="submit">Подтвердить удаление</button><br>
+            {# тип обязательно submit для возможности отправки post-запроса #}
+        </form>
+        <br>
+        {% if 'неверно' in result_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ result_message }}
+            </div>
+        {% endif %}
+        {% if 'успешно' in result_message %}
+            <div class="alert alert-success" role="alert">
+               {{ result_message }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
