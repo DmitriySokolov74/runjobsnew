@@ -1,0 +1,16 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}
+    Удаление клиента
+{% endblock %}
+
+{% block content %}
+    <div class="add_robot">
+        <h1>Удаление клиента</h1>
+        <form method="post">
+            {% csrf_token %}<br>
+            <button class="btn btn-success" type="submit">Подтвердить удаление</button><br>
+        </form>
+        <br>
+    </div>
+{% endblock %}

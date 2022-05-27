@@ -1,92 +1,49 @@
 from django.core.mail import send_mail
 from .celery import app
-from .services import get_mail, send_notification, runjob
-from robots.models import Robots
-from django.conf import settings
-from celery import shared_task, Celery
-
-
-# celery = Celery('runjobs', broker='amqp://guest@localhost//') #!
+from .services import get_data, send_notification, runjob
+from .services.get_data import log
+from robots.models import Robots, Clients
+import datetime
 
 
 @app.task
-def read_mails():
-    # state = MailCheckState.objects.get(task_name='read_mails')
-    # if state:
-    print('Запппуск таска')
-    robots = Robots.objects.all()
-    rbt_names = [x.name for x in robots]
-
-    rbt_names = []
-    full_name_email_dict = {}
-    # Перебираем все записи модели Robots
-    for robot in robots:
-        # Добавим имя робота в список имён, который одновременно является списком допустимых тем писем
-        name = robot.name
-        rbt_names.append(name)
-        # Для каждой записи модели получим список email-адресов
-        robot_emails = list(Robots.objects.get(name=name).email.all())
-        # пополним словарь "имя:список адресов" ("допустимая тема:список адресов")
-        full_name_email_dict[name] = robot_emails
-    # Вызовем функцию проверки почты на наличие писем, у кот-х тема и адрес отправителя
-    # Соответствуют записи в словаре "full_name_email_dict"
-    # Функция вернёт аналогичный словарь, составленный на основе этих писем
-    run_data = get_mail.get_mails(subjs_addr=full_name_email_dict, subjs=rbt_names, Robots=Robots)
-    # Для каждой записи полученного словаря выполним запуск робота при помощи функции "runjob.run"
-    for rbt, address in run_data.items():
-        result = runjob.run(process_name=rbt, model=Robots)
-        if not result:
-            mail_body = f'Не удалось запустить процесс "{rbt}", обратитесь в тех. поддержку'
-        else:
-            mail_body = f'Процесс "{rbt}" успешно запущен'
-        send_notification.send(subj='Уведомление о запуске процесса',
-                               body=mail_body,
-                               addrs=(address,))
+def performer(service_email_address):
+    """Функция-исполнитель, в которой вызываются основные сервисные функции:
+    1) чтение сервисного почтового ящика (read_mailbox)
+    2) отправка запроса на запуск ч/з API (run)
+    3) отправка уведомления пользователю, отправившему письмо запуска, о статусе запуска (send_notification)
+    """
+    log(f'Чтение почтового ящика {service_email_address}', 'info')
+    read_mails_data = get_data.read_mailbox(service_email_address=service_email_address)
+    if read_mails_data['client_name'] is not None:
+        client_name = read_mails_data.get('client_name')
+        service = service_email = Clients.objects.get(client_name=client_name).service
+        host_smtp = service.host_smtp
+        port_smtp = service.port_smtp
+        use_ssl = service.use_ssl
+        use_tls = service.use_tls
+        service_email = Clients.objects.get(client_name=client_name).service_email
+        service_password = Clients.objects.get(client_name=client_name).service_password
+        service_host = Clients.objects.get(client_name=client_name).service_password
+        for robot, address in read_mails_data['mapping'].items():
+            result = runjob.run(process_name=robot, client_name=client_name)
+            if not result[0]:
+                mail_body = f'Не удалось запустить процесс "{robot}", обратитесь в тех. поддержку\n'
+                f'Текст ошибки: "{result[1]}"'
+            else:
+                mail_body = f'Процесс "{robot}" успешно запущен'
+            send_notification.send(subj='Уведомление о запуске процесса', body=mail_body,
+                                   addrs=(address,), from_name=service_email,
+                                   auth_user=service_email, auth_password=service_password,
+                                   host=host_smtp, port=port_smtp, use_ssl=use_ssl, use_tls=use_tls)
 
 
-    #
-    # # Словарь, где ключ = имя процесса, значение = разрешенные адреса отправителей
-    # # Создали словарь при помощи списочного выражения
-    # full_name_email_dict = {rbt: Robots.objects.get(name=rbt).email for rbt in rbt_names}
-    # emails_dict = {rbt: Robots.objects.filter(title=rbt)[0].allowed_emails for rbt in rbt_names}
-    # run_data = get_mail.get_mails(subjs_addr=emails_dict, subjs=rbt_names)
-    #
-    # for rbt, address in run_data.items():
-    #     result = runjob.run(process_name=rbt, model=Robots)
-    #     if not result:
-    #         mail_body = f'Не удалось запустить процесс {rbt}, обратитесь в тех. поддержку'
-    #     else:
-    #         mail_body = f'Процесс {rbt} успешно запущен'
-    #     send_notification.send(subj='Уведомление о запуске процесса',
-    #                            body=mail_body,
-    #                            addrs=(address,))
-    # else:
-    #     print('Таск не должен выполнятьсяя')
-
-# @app.task
-# def my_task(a, b):
-#     c = a + b
-#     return c
-#
-#
-# @app.task
-# def my_task_as(d, e):
-#     c = d + e
-#     return c
-#
-#
-# @app.task(bind=True, default_retry_delay=5*60)
-# # default_retry_delay=5*60 -> ч/з ск. секунд таска повторится в случае исключения
-# def my_task_retry(self, x, y):
-#     try:
-#         return x + y
-#     except Exception as exc:
-#         raise self.retry(exc=exc, countdown=10)
-#         # повторить таску  ч/з 60 сек
-#         # если не укажем "countdown", то
-#         # таска повторится ч/з 5*60 сек
-#
-#
-# @shared_task()
-# def my_sh_task(msg):
-#     return msg + "!!!"
+@app.task
+def dispatcher():
+    """Сервисная функция диспетчера, получающая коллекцию адресов всех сервисных
+    почтовых ящиков и запускающая функцию-исполнитель (performer) для каждого адреса
+    """
+    service_emails = get_data.get_service_mails()
+    for service_email in service_emails:
+        # Создание задачи для исполнителя (performer)
+        performer.delay(service_email)

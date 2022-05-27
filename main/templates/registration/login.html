@@ -1,0 +1,23 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<div class="features_auth">
+    <h2 style="margin-left: 4%;">Вход</h2>
+    <br>
+    {% if user.is_authenticated %}
+    <p>Вы уже выполнили вход.</p>
+    {% else %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="next" value=" {{ next }}">
+        <button class="btn btn-success" type="submit" style="margin-left: 4%;">Войти</button><br>
+    </form>
+    {% endif %}
+    <img src="{% static 'main/img/logo.gif' %}" alt="Лого" style="width: 10%;margin-left: 4%;margin-top: 20px;border: 5px double #6B8E23;">
+
+</div>
+{% endblock %}

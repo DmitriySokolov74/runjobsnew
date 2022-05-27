@@ -1,12 +1,12 @@
 {% extends 'main/layout.html' %}
 
 {% block title %}
-    Удаление робота
+    Удаление почты запуска
 {% endblock %}
 
 {% block content %}
     <div class="add_robot">
-        <h1>Удаление робота</h1>
+        <h1>Удаление почты запуска</h1>
         <form method="post">
             {% csrf_token %}<br>
             <button class="btn btn-success" type="submit">Подтвердить удаление</button><br>

@@ -1,4 +1,5 @@
-{% extends 'robots/layout.html' %}
+{% extends 'main/layout.html' %}
+{% load static %}
 
 {% block title %}Новый робот{% endblock %}
 
@@ -8,10 +9,9 @@
         <form method="post">
             {# добавляем CSRF-токен для безопасной передачи данных из формы #}
             {% csrf_token %}<br>
-            Имя <br>{{ form.name }}<br><br>
+            <a href="#name_anchor">Имя процесса</a><br>{{ form.name }}<br><br>
             Описание <br>{{ form.info }}<br><br>
-            Эл. почта <br>{{ form.email }}<br><br>
-            Клиент <br> {{ form.client }}<br><br>
+            Почта запуска <br>{{ form.email }}<br><br>
             <button class="btn btn-success" type="submit">Сохранить</button><br>
             {# тип обязательно submit для возможносит отправки post-запроса #}
         </form>
@@ -26,5 +26,7 @@
                {{ result_message }}
             </div>
         {% endif %}
+        <p id="name_anchor">* имя процесса должно совпадать с именем процесса в оркестраторе</p>
+        <p style="width: 100%;"><img src="{% static 'img/robots/ProcessName.png' %}" alt="Имя процесса"></p>
     </div>
 {% endblock %}

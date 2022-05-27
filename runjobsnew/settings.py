@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os.path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,14 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=aur!@6frs%ou&jhp$#9ri*%5=1_)2l^0ryk+6h+q6r&ae=1n7'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -55,6 +49,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'runjobsnew.urls'
 
+# Разграничение доступа
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGOUT_REDIRECT_URL = 'login'
+PASSWORD_RESET_TIMEOUT_DAYS = 3
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -72,21 +73,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'runjobsnew.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -108,17 +94,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Oral'
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
 STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -126,22 +108,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SMTP settings
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'falcon22falcon22@gmail.com'
-EMAIL_HOST_PASSWORD = 'ljifpapjtiavazdv'
-EMAIL_PORT = 587
-SERVER_EMAIL = EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# Email services constants
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# IMAP settings
-GET_EMAIL_HOST = 'imap.gmail.com'
-GET_EMAIL_PORT = 993
-GET_EMAIL_PASSWORD = 'falcon22mgn'
-
 
 # REDIS settings
 REDIS_HOST = '0.0.0.0'
@@ -153,23 +121,16 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-# указали json, т.к. redis работает с БД NoSQL, а она имеет формат ключ: значение
-
-# orchestrator settings
-# ORC_BODY_TOKEN = {
-#     "grant_type": "refresh_token",
-#     "client_id": "8DEv1AMNXczW3y4U15LL3jYf62jK93n5",
-#     "refresh_token": "vZWugYBYptzrqc7PLP0WbGBlF2F45f-crkbbBli1yDGdk"
-# }
 ORC_URL_TOKEN = 'https://account.uipath.com/oauth/token'
 ORC_URL_FOLDER_ID = 'https://cloud.uipath.com/{0}/{1}/orchestrator_/odata/Folders'
 
 ORC_URL_PROCESS_KEY = 'https://cloud.uipath.com/{0}/{1}/orchestrator_/odata/Releases'
 ORC_URL_ROBOT_ID = 'https://cloud.uipath.com/{0}/{1}/orchestrator_/odata/Users'
 ORC_URL_START_JOB = 'https://cloud.uipath.com/{0}/{1}/orchestrator_/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs'
-# ORC_FOLDER_NAME = 'FalconFolder'
-# ORC_TENANT_NAME = 'FalconTenant'
-# ORC_USER_ADDRESS = 'raskalovdima@yandex.ru'
-#
-# # info from mail:
-# process_name = 'Second'
+
+# LOG CONSTANT
+
+try:
+    from .local_settings import  *
+except ImportError:
+    from .prod_settings import  *

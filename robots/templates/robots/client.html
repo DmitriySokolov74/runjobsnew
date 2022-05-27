@@ -1,0 +1,15 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}
+    {{ client.client_name }}
+{% endblock %}
+
+{% block content %}
+    <div class="robots_table">
+        <h1>{{ client.client_name }}</h1>
+        <h3>Почтовый сервис запуска роботов</h3>
+        <p>{{ client.service }}</p>
+        <a href="{% url 'client-delete' client.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'client-update' client.pk %}" class="btn btn-info">Редактировать</a>
+    </div>
+{% endblock %}

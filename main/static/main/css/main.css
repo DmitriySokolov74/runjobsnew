@@ -5,60 +5,26 @@ body {
 
 aside {
     float: left;
-    background: #a9dbb1;
-    width: 20%;
-    padding: 2.5%;
-    height: 10%;
-    color: #084f4f;
-    border-right: 5px solid #ccf0d2;
+    color: black;
+    margin-top: 100px;
+    text-align: center;
+    width: 100%;
+    background: black;
 }
 
-aside img{
-    width: 30%;
+main .features_auth {
     float: left;
-    border: 1px solid #ccf0d2;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 2px #ccf0d2;
-    margin-left: 10%;
-}
-
-aside .logo {
-    font-size: 40px;
-    margin-left: 10px;
-    font-weight: bold;
-    color: #084f4f;
-    position: relative;
-    top: -5px;
-}
-
-aside h3 {
-    margin-top: 50px;
-    font-size: 28px;
-}
-
-aside ul {list-style: none}
-
-aside ul li {
-    color: #084f4f;
-    display: block;
-    margin-top: 20px;
-}
-
-aside a {
-    text-decoration: none;
-}
-
-aside ul li:hover, aside ul a:hover {
-    text-decoration: none;
-    font-weight: bold;
-}
+    color: black;
+    margin-top: 100px;
+    text-align: center;
+    width: 100%;
 
 main .features {
     float: left;
     color: black;
     margin-top: 100px;
     text-align: center;
-    width: 75%;
+    width: 100%;
 }
 
 main .features form {
@@ -70,3 +36,7 @@ main .features form {
 main .features h1 {font-size: 50px;}
 main .features p {max-width: 400px; margin: 20px auto;}
 main .main_form {width: 40%;}
+
+main .section {
+    width: 100%;
+}

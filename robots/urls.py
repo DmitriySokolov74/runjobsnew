@@ -24,5 +24,4 @@ urlpatterns = [
     path('<int:pk>/delete', RobotsDeleteView.as_view(), name='robot-delete'),
     path('<int:pk>/', RobotsDetail.as_view(), name='robot-detail'),
     path('emails', EmailCreate.as_view(), name="emails"),
-    path('clients', ClientCreate.as_view(), name="clients")
 ]

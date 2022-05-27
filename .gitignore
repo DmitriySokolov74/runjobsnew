@@ -1,0 +1,14 @@
+prod_settings
+robots/migrations/*
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+*backend/*/migrations/
+!*backend/*/migrations
+!*backend/*/migrations/__init_-.py
+
+__pycache__/
+*/__pycache__/
+*py[cod]
+.pyc
+*.pyc

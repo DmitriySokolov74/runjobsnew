@@ -1,25 +1,22 @@
-"""runjobsnew URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
-from .views import post_search
+from .views import post_search, home, SignUp, account, go_admin
+from robots.views import ClientCreate, ClientUpdate, ClientDelete, ClientDetail, EmailDelete, EmailUpdate
 
 
 urlpatterns = [
-    path('', post_search, name='home'),
+    #path('', post_search, name='home'),
+    path('', home, name='home'),
     path('robots/', include('robots.urls')),
     path('admin/', admin.site.urls),
+    path('admin/login', go_admin, name='go_admin'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('signup/', SignUp.as_view(), name='signup'),
+    path('accounts/profile/', account, name='account'),
+    path('clients', ClientCreate.as_view(), name="clients"),
+    path('client/<int:pk>/', ClientDetail.as_view(), name="client-detail"),
+    path('client/<int:pk>/update/', ClientUpdate.as_view(), name="client-update"),
+    path('client/<int:pk>/delete/', ClientDelete.as_view(), name="client-delete"),
+    path('accept_email/<int:pk>/delete', EmailDelete.as_view(), name='email-delete'),
+    path('accept_email/<int:pk>/update', EmailUpdate.as_view(), name='email-update'),
 ]

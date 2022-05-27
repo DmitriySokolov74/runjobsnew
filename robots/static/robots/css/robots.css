@@ -1,13 +1,17 @@
+main {
+margin: 50px;
+}
+
 .robots_table {
     float: left;
     padding: 2.5%;
-    width: 70%;
+    width: 100%;
 }
 
 .robots_table table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    width: 60%;
+    width: 100%;
 }
 
 .robots_table td, th {
@@ -26,7 +30,7 @@
 
 .add_robot {
     float: left;
-    width: 70%;
+    width: 80%;
     padding: 2.5%;
 }
 

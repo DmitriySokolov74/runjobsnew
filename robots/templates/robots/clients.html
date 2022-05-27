@@ -1,21 +1,24 @@
-{% extends 'robots/layout.html' %}
+{% extends 'main/layout.html' %}
 {% load static %}
-{% block title %}Клиенты{% endblock %}
+{% block title %}Оркестратор{% endblock %}
 {% block content %}
      <div class="add_robot">
-        <h2>Добавление клиента</h2>
+        <h2>Данные оркестратора и рабочей почты</h2>
          <br>
         <form method="post">
-            {# добавляем CSRF-токен для безопасной передачи данных из формы #}
             {% csrf_token %}
             <p>Организация:  {{ form.client_name }}</p>
-            <p><a href="#mail_anchor">Эл. почта</a>:  {{ form.user }}</p>
+            <p><a href="#mail_anchor">Эл. почта UIPath</a>:  {{ form.user }}</p>
             <p><a href="#api_anchor">Ключ клиента</a>: {{ form.user_key }}</p>
             <p><a href="#api_anchor">ID организации</a>: {{ form.org }}</p>
             <p><a href="#api_anchor">Тенант</a>: {{ form.tenant }}</p>
             <p><a href="#api_anchor">ID клиента</a>: {{ form.client_id }}</p>
             <p>Папка: {{ form.folder }}</p>
-            <button class="btn btn-success" type="submit">+Добавить клиента</button><br>
+            <p>Почтовый сервис: {{ form.service }}</p>
+            <p>Сервисная почта: {{ form.service_email }}</p>
+            <p>Пароль сервисной почты: {{ form.service_password }}</p>
+            <p>Имя почтового ящика: {{ form.service_mail_folder }}</p>
+            <button class="btn btn-success" type="submit">Сохранить</button><br>
         </form>
         <br>
         <h3 id="mail_anchor">Ввод адреса электронной почты</h3>
@@ -28,9 +31,5 @@
         <p>Данные для заполнения этих полей можно найти на вкладке "API access" раздела "Admin"</p>
             <p><img src="{% static 'img/robots/ApiAccessPath.png' %}" alt="Меню API access"></p>
             <p><img src="{% static 'img/robots/ApiAccessWin.png' %}" alt="Окно API access"></p>
-        <h2>С нами уже сотрудничают:</h2>
-        {% for client in clients %}
-            <p>{{ client }}</p>
-        {% endfor %}
     </div>
 {% endblock %}

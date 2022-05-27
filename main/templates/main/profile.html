@@ -1,0 +1,125 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<div class="features">
+    <h3>Личный кабинет пользователя "{{ request.user }}"</h3>
+    <br>
+    <div class="section"><!--    Cleint-->
+        <hr>
+        <h4>Оркестратор клиента</h4>
+        {% if client_info is not None %}
+            <div class="robots_table">
+                <table>
+                  <tr>
+                    <th>Имя клиента</th>
+                    <th>Email пользователя uipath</th>
+                    <th>Почтовый сервис</th>
+                    <th>Сервисная почта</th>
+                  </tr>
+                    <tr>
+                        <td>
+                            <a href="{% url 'client-detail' client_info.pk %}">
+                                {{ client_info.client_name}}
+                            </a>
+                        </td>
+
+                        <td>{{ client_info.user }}</td>
+                        <td>{{ client_info.service }}</td>
+                        <td>{{ client_info.service_email }}</td>
+                    </tr>
+                </table>
+            </div>
+        {% else %}
+            <p>Нет данных оркестратора</p>
+            <a href="{% url 'clients' %}"><button class="btn btn-success">Заполнить</button></a>
+        {% endif %}
+    </div>
+
+    <div class="section"><!--    Running emails-->
+
+        <h4>Почтовые адреса запуска</h4>
+        {% if run_emails is not None %}
+            <div class="robots_table">
+                <table>
+                    <tr>
+                        <th>Владелец почтового ящика</th>
+                        <th>Почтовый адрес</th>
+                        <th>Доступное действие</th>
+                    </tr>
+                    {% for run_email in run_emails %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'email-update' run_email.pk %}">
+                                {{ run_email.email_owner_name }}
+                            </a>
+
+                        </td>
+                        <td>{{ run_email.email }}</td>
+                        <td>
+                            <a href="{% url 'email-delete' run_email.pk %}">
+                                Удалить
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <p>Почтовые адреса для запуска роботов не добавлены</p>
+        {% endif %}
+        <a href="{% url 'emails' %}"><button class="btn btn-success">Добавить</button></a>
+    </div>
+<!--    роботы-->
+    <div class="section">
+        <hr>
+        <h4>Добавленные роботы</h4>
+        {% if robots is None %}
+            <p>Нет созданных роботов</p>
+        {% else %}
+            <div class="robots_table">
+                <h4>Список роботов</h4>
+                {% if robots %}
+                    <table>
+                      <tr>
+                        <th>Имя</th>
+                        <th>Описание</th>
+                        <th>Дата</th>
+                        <th>Почта запуска</th>
+                        <th>Клиент</th>
+                      </tr>
+                        {# Вывод всех записей модели Robots #}
+                        {% for x in robots %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'robot-detail' x.pk %}">
+                                        {{ x.name }}
+                                    </a>
+                                </td>
+                                <td>{{ x.info }}</td>
+                                <td>{{ x.date|date:"d.m.Y" }}</td>
+                                <td>
+                                    {# для поля с типом связи ManyToMany нужно выводить содержимое так: #}
+                                    {% for e in x.email.all %}
+                                        {{ e }}<br>
+                                    {% endfor %}
+                                </td>
+                                <td>{{ x.client }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <p>Таблица роботов пуста</p>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if client_info is not None %}
+            <a href="{% url 'robot-add' %}"><button class="btn btn-success">Добавить</button></a>
+        {% else %}
+            <p>Для добавления робота необходимо заполнить данные оркестратора</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

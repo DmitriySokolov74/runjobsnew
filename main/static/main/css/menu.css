@@ -1,0 +1,117 @@
+.menu1,
+.menu1 ul,
+.menu1 li,
+.menu1 a {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+}
+
+.menu1 { /*Find this class in the css file*/
+
+height: 40px;
+width: 100%; /*I changed this to a percentage of the page,*/
+margin-left:auto; /*Then added these two margin styles.*/
+margin-right:auto;
+
+background: #a9dbb1;
+background: -webkit-linear-gradient(top, #9ACD32 0%,#6B8E23 100%);
+background: -moz-linear-gradient(top, #9ACD32 0%,#6B8E23 100%)
+background: -o-linear-gradient(top, #9ACD32 0%,#6B8E23 100%);
+background: -ms-linear-gradient(top, #9ACD32 0%,#6B8E23 100%);
+background: linear-gradient(top, #9ACD32 0%,#6B8E23 100%);
+}
+
+.menu1 li {
+    position: relative;
+    list-style: none;
+    float: left;
+    display: block;
+    height: 40px;
+    color: #084f4f
+}
+.menu1 li a {
+    display: block;
+    padding: 0 14px;
+    margin: 6px 0;
+    line-height: 28px;
+    text-decoration: none;
+
+    border-left: 1px solid #4c871f;
+    border-right: 1px solid #4c871f;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+
+    color: #f3f3f3;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.6);
+
+    -webkit-transition: color .2s ease-in-out;
+    -moz-transition: color .2s ease-in-out;
+    -o-transition: color .2s ease-in-out;
+    -ms-transition: color .2s ease-in-out;
+    transition: color .2s ease-in-out;
+}
+
+.menu1 li:first-child a { border-left: none; }
+.menu1 li:last-child a{ border-right: none; }
+
+.menu1 li:hover > a { color: #8fde62;
+}
+.menu1 ul {
+
+    position: absolute;
+    top: 40px;
+    left: 0;
+
+    opacity: 50;
+    background: #1f2024;
+
+    -webkit-border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+
+    -webkit-transition: opacity .25s ease .1s;
+    -moz-transition: opacity .25s ease .1s;
+    -o-transition: opacity .25s ease .1s;
+    -ms-transition: opacity .25s ease .1s;
+    transition: opacity .25s ease .1s;
+
+}
+
+.menu1 li:hover > ul { opacity: 50; }
+
+.menu1 ul li {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+
+    -webkit-transition: height .25s ease .1s;
+    -moz-transition: height .25s ease .1s;
+    -o-transition: height .25s ease .1s;
+    -ms-transition: height .25s ease .1s;
+    transition: height .25s ease .1s;
+}
+
+.menu1 li:hover > ul li {
+    height: 36px;
+    overflow: visible;
+    padding: 0;
+}
+.menu1 ul li a {
+    width: 100px;
+    padding: 4px 0 4px 40px;
+    margin: 0;
+
+    border: none;
+    border-bottom: 1px solid #353539;
+}
+
+.menu1 ul li:last-child a { border: none;
+}
+.menu1 a.documents { background: url(../img/docs.png) no-repeat 6px center; }
+.menu1 a.messages { background: url(../img/bubble.png) no-repeat 6px center; }
+.menu1 a.signout { background: url(../img/arrow.png) no-repeat 6px center;
+}

@@ -1,0 +1,30 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <div class="features">
+        {% if 'query' in request.GET %}
+            {% if results_count is None %}
+                <h2>Данные введены в поле поиска неверно</h2>
+            {% else %}
+                <h2>Записи, содержащие '{{ cd.query }}':</h2>
+                {% for result in results %}
+                    {{ result.info }} (<a href="{% url 'robot-detail' result.pk %}">{{ result.name }}</a>)<br>
+                {% endfor %}<br>
+                <a href="{% url 'home' %}"><button class="btn btn-warning">Очистить результаты поиска</button></a>
+            {% endif %}
+        {% else %}
+            <h2>Поиск процессов</h2>
+            <form action="." method="get">
+                <br>
+                {{ form.query }}<br><br>
+                <button class="btn btn-success" type="submit">Найти</button><br>
+            </form>
+        {% include 'main/info.txt' %}
+        {% endif %}
+
+
+    </div>
+{% endblock %}
