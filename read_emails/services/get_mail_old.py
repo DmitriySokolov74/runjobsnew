@@ -6,6 +6,8 @@ from django.conf import settings
 import base64
 import quopri
 import traceback
+import time
+from robots.models import Robots, Email, Clients, EmailService
 
 
 # от кого ждем письма
@@ -51,6 +53,7 @@ def get_mails(subjs_addr, subjs, Robots):
     '''
     :param subjs_addr: словарь "тема:разрешенные адреса (ч/з ;)"
     :param subjs: список допустимых тем письма
+    :param Robots: Модель Robots
     :return: Словарь имя процесса: адрес отправителя для запуска по API
     '''
     try:
