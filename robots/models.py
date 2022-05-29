@@ -63,7 +63,7 @@ class Clients(models.Model):
     service = models.ForeignKey(EmailService, on_delete=models.PROTECT, null=True, blank=True)
     service_email = models.EmailField('Сервисная почта', max_length=300, null=True, blank=True, unique=True)  # EMAIL_HOST_USER
     service_password = PasswordModelField('Пароль почтового сервиса', max_length=200, null=True, blank=True)
-    service_mail_folder = models.CharField('Имя почтового ящика', max_length=200, default='inbox')
+    service_mail_folder = models.CharField('Имя почтовой папки', max_length=200, default='inbox')
 
     def __str__(self):
         return self.client_name

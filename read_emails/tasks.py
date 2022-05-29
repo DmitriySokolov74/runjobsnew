@@ -31,7 +31,7 @@ def performer(service_email_address):
                 mail_body = f'Не удалось запустить процесс "{robot}", обратитесь в тех. поддержку\n'
                 f'Текст ошибки: "{result[1]}"'
             else:
-                mail_body = f'Процесс "{robot}" успешно запущен'
+                mail_body = f'Процесс "{robot}" успешно запущен по письму от отправителя "{address}"'
             send_notification.send(subj='Уведомление о запуске процесса', body=mail_body,
                                    addrs=(address,), from_name=service_email,
                                    auth_user=service_email, auth_password=service_password,

@@ -37,8 +37,10 @@ def home(request):
 def go_admin(request):
     return render(request)
 
+
+
 class SignUp(CreateView):
-    '''Контроллер авторизации пользователя'''
+    """Контроллер авторизации пользователя"""
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
